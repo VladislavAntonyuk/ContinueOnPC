@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:ContinueOnPC"
+             x:Class="ContinueOnPC.MainPage"
+             xmlns:converters="clr-namespace:Xamarin.CommunityToolkit.Converters;assembly=Xamarin.CommunityToolkit"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             ios:Page.UseSafeArea="true">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:BoolToObjectConverter
+                x:Key="BoolToObjectConverter"
+                FalseObject="Subscribe"
+                TrueObject="Unsubscribe" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <StackLayout>
+        <Entry Text="{Binding DbUrl}" ReturnType="Next" Keyboard="Url" Placeholder="Db url: https://mydb-default-rtdb.europe-west1.firebasedatabase.app/"/>
+        <Entry Text="{Binding LoginUrl}" ReturnType="Next" Keyboard="Url" Placeholder="Login url: myapp.firebaseapp.com"/>
+        <Entry Text="{Binding WebApiKey}" ReturnType="Next" Placeholder="WebApi key: See in Project settings"/>
+        <Entry Text="{Binding Login}" ReturnType="Next" Keyboard="Email" Placeholder="Login: email"/>
+        <Entry Text="{Binding Password}" ReturnType="Done" IsPassword="True" Placeholder="Password"/>
+        <Button Text="Test" Command="{Binding TestCommand}"/>
+        <Button Text="{Binding IsSubscribed, Converter={StaticResource BoolToObjectConverter}}" Command="{Binding SubscribeCommand}"/>
+    </StackLayout>
+
+</ContentPage>
+
