@@ -7,7 +7,7 @@
 	<key>CFBundleName</key>
 	<string>ContinueOnPC</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.vladislavantonyuk.ContinueOnPC.ContinueOnPC-iOS-ShareExtension</string>
+	<string>com.vladislavantonyuk.continueonpc.continueonpc-iOS-ShareExtension</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleInfoDictionaryVersion</key>

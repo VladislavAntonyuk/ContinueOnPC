@@ -1,6 +1,6 @@
-﻿namespace ContinueOnPC.Models
+namespace ContinueOnPC.Models
 {
-    public class Constants
+    public static class Constants
     {
         public const string DbUrlKey = "firebase.dburl";
         public const string WebApiKey = "firebase.webapikey";
@@ -9,4 +9,3 @@
         public const string PasswordKey = "firebase.password";
     }
 }
-
