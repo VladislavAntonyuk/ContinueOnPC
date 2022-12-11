@@ -1,6 +1,6 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFrameworks>net6.0-ios</TargetFrameworks>
+        <TargetFrameworks>net7.0-ios</TargetFrameworks>
         <UseMaui>true</UseMaui>
         <OutputType>Library</OutputType>
         <ApplicationId>com.vladislavantonyuk.continueonpc.continueonpc-iOS-ShareExtension</ApplicationId>
@@ -9,7 +9,7 @@
         <CodesignProvision>Automatic</CodesignProvision>
         <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
 
-        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
     </PropertyGroup>
 
     <PropertyGroup>
@@ -20,7 +20,6 @@
     <ItemGroup>
         <PackageReference Include="FirebaseDatabase.net" Version="4.1.0"/>
         <PackageReference Include="FirebaseAuthentication.net" Version="4.0.0-alpha.2"/>
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0"/>
     </ItemGroup>
 
     <ItemGroup>
