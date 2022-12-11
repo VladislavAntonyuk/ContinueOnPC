@@ -20,9 +20,17 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 7.0.x
         include-prerelease: true
+
     - name: Install dependencies
       run: dotnet workload install maui
+      
+    - name: Install Tizen
+      if: ${{ matrix.os == 'windows-latest' }}
+      run: |
+        Invoke-WebRequest 'https://raw.githubusercontent.com/Samsung/Tizen.NET/main/workload/scripts/workload-install.ps1' -OutFile 'workload-install.ps1'
+        .\workload-install.ps1
+      
     - name: Build
       run: dotnet build
