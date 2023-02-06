@@ -1,5 +1,8 @@
 # Continue On PC
 
+This project is tested with BrowserStack.
+License: MIT.
+
 ## Setup Firebase account
 1. Create new project on https://console.firebase.google.com/
 1. Enable authentication by Email/Password on https://console.firebase.google.com/u/0/project/YOUR_PROJECT_ID/authentication/providers
