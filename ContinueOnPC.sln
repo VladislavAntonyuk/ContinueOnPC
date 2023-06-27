@@ -1,18 +1,19 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31611.283
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContinueOnPC", "ContinueOnPC\ContinueOnPC.csproj", "{91B68EB5-8F75-4844-92CF-7A315C1BE6C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContinueOnPC.iOS.ShareExtension", "ContinueOnPC.iOS.ShareExtension\ContinueOnPC.iOS.ShareExtension.csproj", "{36A3B0C6-0277-4AA0-B822-71FE52EDCAF9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContinueOnPC.iOS.ShareExtension", "ContinueOnPC.iOS.ShareExtension\ContinueOnPC.iOS.ShareExtension.csproj", "{36A3B0C6-0277-4AA0-B822-71FE52EDCAF9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContinueOnPC.Models", "ContinueOnPC.Models\ContinueOnPC.Models.csproj", "{3C60ECD4-3E5E-4277-8C58-2224BAE6C016}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContinueOnPC.Models", "ContinueOnPC.Models\ContinueOnPC.Models.csproj", "{3C60ECD4-3E5E-4277-8C58-2224BAE6C016}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContinueOnPC.Services", "ContinueOnPC.Services\ContinueOnPC.Services.csproj", "{E5947892-3382-4CD8-A25C-2EF0E1B8D47D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ContinueOnPC.Services", "ContinueOnPC.Services\ContinueOnPC.Services.csproj", "{E5947892-3382-4CD8-A25C-2EF0E1B8D47D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DE4BF548-848B-4528-B51F-5093B659CF84}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
 		NuGet.config = NuGet.config
 		README.md = README.md
 	EndProjectSection

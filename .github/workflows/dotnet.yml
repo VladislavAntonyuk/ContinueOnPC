@@ -11,6 +11,7 @@ jobs:
 
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [windows-latest]
         #os: [windows-latest, macos-latest]
@@ -33,4 +34,7 @@ jobs:
         .\workload-install.ps1
       
     - name: Build
-      run: dotnet build
+      run: |
+        dotnet build
+        &"${Env:ProgramFiles(x86)}\Windows Kits\10\App Certification Kit\MakeAppx.exe" pack /v /h SHA256 /d "ContinueOnPC\bin\Release\net7.0-windows10.0.19041.0\win10-x64" /p "output/Windows/ContinueOnPC.msix";
+      

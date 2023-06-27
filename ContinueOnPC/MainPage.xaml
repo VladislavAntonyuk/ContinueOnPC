@@ -1,33 +1,37 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="ContinueOnPC.MainPage">
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <toolkit:BoolToObjectConverter
-                x:Key="BoolToObjectConverter"
-                FalseObject="Subscribe"
-                TrueObject="Unsubscribe" />
-        </ResourceDictionary>
-    </ContentPage.Resources>
+	<ContentPage.Resources>
+		<ResourceDictionary>
+			<toolkit:BoolToObjectConverter
+				x:Key="BoolToObjectConverter"
+				FalseObject="Subscribe"
+				TrueObject="Unsubscribe" />
+		</ResourceDictionary>
+	</ContentPage.Resources>
 
-    <ScrollView>
-        <VerticalStackLayout
-            Spacing="25"
-            Padding="30,0"
-            VerticalOptions="Center">
+	<ScrollView>
+		<VerticalStackLayout
+			Spacing="25"
+			Padding="30,0"
+			VerticalOptions="Center">
 
-                
-        <Entry Text="{Binding DbUrl}" ReturnType="Next" Keyboard="Url" Placeholder="Db url: https://mydb-default-rtdb.europe-west1.firebasedatabase.app/"/>
-        <Entry Text="{Binding LoginUrl}" ReturnType="Next" Keyboard="Url" Placeholder="Login url: myapp.firebaseapp.com"/>
-        <Entry Text="{Binding WebApiKey}" ReturnType="Next" Placeholder="WebApi key: See in Project settings"/>
-        <Entry Text="{Binding Login}" ReturnType="Next" Keyboard="Email" Placeholder="Login: email"/>
-        <Entry Text="{Binding Password}" ReturnType="Done" IsPassword="True" Placeholder="Password"/>
-        <Button Text="Test" Command="{Binding TestCommand}"/>
-        <Button Text="{Binding IsSubscribed, Converter={StaticResource BoolToObjectConverter}}" Command="{Binding SubscribeCommand}"/>
 
-        </VerticalStackLayout>
-    </ScrollView>
+			<Entry Text="{Binding DbUrl}" ReturnType="Next" Keyboard="Url"
+			       Placeholder="Db url: https://mydb-default-rtdb.europe-west1.firebasedatabase.app/" />
+			<Entry Text="{Binding LoginUrl}" ReturnType="Next" Keyboard="Url"
+			       Placeholder="Login url: myapp.firebaseapp.com" />
+			<Entry Text="{Binding WebApiKey}" ReturnType="Next" Placeholder="WebApi key: See in Project settings" />
+			<Entry Text="{Binding Login}" ReturnType="Next" Keyboard="Email" Placeholder="Login: email" />
+			<Entry Text="{Binding Password}" ReturnType="Done" IsPassword="True" Placeholder="Password" />
+			<Button Text="Test" Command="{Binding TestCommand}" />
+			<Button Text="{Binding IsSubscribed, Converter={StaticResource BoolToObjectConverter}}"
+			        Command="{Binding SubscribeCommand}" />
+
+		</VerticalStackLayout>
+	</ScrollView>
 
 </ContentPage>

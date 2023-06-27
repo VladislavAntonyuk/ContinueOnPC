@@ -9,7 +9,7 @@
         <CodesignProvision>Automatic</CodesignProvision>
         <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
 
-        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">11.0</SupportedOSPlatformVersion>
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.0</SupportedOSPlatformVersion>
     </PropertyGroup>
 
     <PropertyGroup>

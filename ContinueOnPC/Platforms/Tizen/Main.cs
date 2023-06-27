@@ -1,8 +1,4 @@
-using System;
-using Microsoft.Maui;
-using Microsoft.Maui.Hosting;
-
-namespace ContinueOnPC;
+﻿namespace ContinueOnPC;
 
 class Program : MauiApplication
 {
