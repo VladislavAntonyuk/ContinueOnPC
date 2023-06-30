@@ -1,4 +1,4 @@
-﻿namespace ContinueOnPC;
+﻿namespace ContinueOnPC.Services;
 
 public class PreferencesService : IPreferencesService
 {

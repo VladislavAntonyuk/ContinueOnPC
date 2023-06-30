@@ -1,11 +1,12 @@
-﻿namespace ContinueOnPC;
+﻿namespace ContinueOnPC.Services;
 
+using System.Reactive.Disposables;
+using ContinueOnPC.Models;
 using Firebase.Auth;
 using Firebase.Auth.Providers;
 using Firebase.Database;
 using Firebase.Database.Query;
 using Firebase.Database.Streaming;
-using Models;
 
 public class FirebaseService : IFirebaseService
 {
@@ -18,8 +19,28 @@ public class FirebaseService : IFirebaseService
 		this.deviceInfo = deviceInfo;
 	}
 
-	public async Task PublishDataAsync(string uri)
+	public async Task<bool> ValidateConnection()
 	{
+		try
+		{
+			using var firebaseClient = await GetClient();
+			return true;
+		}
+		catch (Exception e)
+		{
+			Console.WriteLine(e);
+			return false;
+		}
+	}
+
+	public async Task<bool> PublishDataAsync(string uri)
+	{
+		var isValid = await ValidateConnection();
+		if (!isValid)
+		{
+			return false;
+		}
+
 		using var firebaseClient = await GetClient();
 		await firebaseClient.Child("Links")
 		                    .PostAsync(new LinkInfo
@@ -27,11 +48,18 @@ public class FirebaseService : IFirebaseService
 			                    Link = new Uri(uri),
 			                    Source = deviceInfo.Name
 		                    });
+		return true;
 	}
 
 	public async Task<IDisposable> SubscribeDataAsync(Func<LinkInfo, Task> action)
 	{
-		using var firebaseClient = await GetClient();
+		var isValid = await ValidateConnection();
+		if (!isValid)
+		{
+			return Disposable.Empty;
+		}
+
+		var firebaseClient = await GetClient();
 		return firebaseClient.Child("Links")
 		                     .AsObservable<LinkInfo>()
 		                     .Subscribe(async x =>

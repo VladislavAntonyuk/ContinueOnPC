@@ -1,9 +1,10 @@
-﻿namespace ContinueOnPC;
+﻿namespace ContinueOnPC.Services;
 
-using Models;
+using ContinueOnPC.Models;
 
 public interface IFirebaseService
 {
-	Task PublishDataAsync(string uri);
+	Task<bool> ValidateConnection();
+	Task<bool> PublishDataAsync(string uri);
 	Task<IDisposable> SubscribeDataAsync(Func<LinkInfo, Task> progress);
 }

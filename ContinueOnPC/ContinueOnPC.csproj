@@ -51,7 +51,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\ContinueOnPC.Services\ContinueOnPC.Services.csproj" />
 		<ProjectReference Include="..\ContinueOnPC.iOS.ShareExtension\ContinueOnPC.iOS.ShareExtension.csproj"
-		                  Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">
+		                  Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios' and $([MSBuild]::IsOSPlatform('windows')) == 'false'">
 			<IsAppExtension>true</IsAppExtension>
 			<IsWatchApp>false</IsWatchApp>
 		</ProjectReference>

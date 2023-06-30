@@ -1,16 +1,18 @@
 ﻿namespace ContinueOnPC;
 
+using System.Reactive.Disposables;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Models;
+using Services;
 
 public partial class MainPageViewModel : ObservableObject
 {
-	private readonly IDispatcher _dispatcher;
-	private readonly IFirebaseService _firebaseService;
-	private readonly ILauncher _launcher;
-	private readonly IPreferencesService _preferencesService;
+	private readonly IDispatcher dispatcher;
+	private readonly IFirebaseService firebaseService;
+	private readonly ILauncher launcher;
+	private readonly IPreferencesService preferencesService;
 
 	[ObservableProperty]
 	private bool isSubscribed;
@@ -22,15 +24,15 @@ public partial class MainPageViewModel : ObservableObject
 		ILauncher launcher,
 		IDispatcher dispatcher)
 	{
-		_preferencesService = preferencesService;
-		_firebaseService = firebaseService;
-		_launcher = launcher;
-		_dispatcher = dispatcher;
+		this.preferencesService = preferencesService;
+		this.firebaseService = firebaseService;
+		this.launcher = launcher;
+		this.dispatcher = dispatcher;
 	}
 
 	public string DbUrl
 	{
-		get => _preferencesService.Get(Constants.DbUrlKey);
+		get => preferencesService.Get(Constants.DbUrlKey);
 		set
 		{
 			if (DbUrl == value)
@@ -38,13 +40,13 @@ public partial class MainPageViewModel : ObservableObject
 				return;
 			}
 
-			_preferencesService.Save(Constants.DbUrlKey, value);
+			preferencesService.Save(Constants.DbUrlKey, value);
 		}
 	}
 
 	public string Login
 	{
-		get => _preferencesService.Get(Constants.LoginKey);
+		get => preferencesService.Get(Constants.LoginKey);
 		set
 		{
 			if (Login == value)
@@ -52,13 +54,13 @@ public partial class MainPageViewModel : ObservableObject
 				return;
 			}
 
-			_preferencesService.Save(Constants.LoginKey, value);
+			preferencesService.Save(Constants.LoginKey, value);
 		}
 	}
 
 	public string Password
 	{
-		get => _preferencesService.Get(Constants.PasswordKey);
+		get => preferencesService.Get(Constants.PasswordKey);
 		set
 		{
 			if (Password == value)
@@ -66,13 +68,13 @@ public partial class MainPageViewModel : ObservableObject
 				return;
 			}
 
-			_preferencesService.Save(Constants.PasswordKey, value);
+			preferencesService.Save(Constants.PasswordKey, value);
 		}
 	}
 
 	public string WebApiKey
 	{
-		get => _preferencesService.Get(Constants.WebApiKey);
+		get => preferencesService.Get(Constants.WebApiKey);
 		set
 		{
 			if (WebApiKey == value)
@@ -80,13 +82,13 @@ public partial class MainPageViewModel : ObservableObject
 				return;
 			}
 
-			_preferencesService.Save(Constants.WebApiKey, value);
+			preferencesService.Save(Constants.WebApiKey, value);
 		}
 	}
 
 	public string LoginUrl
 	{
-		get => _preferencesService.Get(Constants.LoginUrlKey);
+		get => preferencesService.Get(Constants.LoginUrlKey);
 		set
 		{
 			if (LoginUrl == value)
@@ -94,15 +96,22 @@ public partial class MainPageViewModel : ObservableObject
 				return;
 			}
 
-			_preferencesService.Save(Constants.LoginUrlKey, value);
+			preferencesService.Save(Constants.LoginUrlKey, value);
 		}
 	}
 
 	[RelayCommand]
 	private async Task Test()
 	{
-		await _firebaseService.PublishDataAsync("https://vladislavantonyuk.azurewebsites.net");
-		await Toast.Make("Success").Show();
+		var result = await firebaseService.PublishDataAsync("https://vladislavantonyuk.azurewebsites.net");
+		if (result)
+		{
+			await Toast.Make("Success").Show();
+		}
+		else
+		{
+			await Toast.Make("Unable to send data. Check the input data").Show();
+		}
 	}
 
 	[RelayCommand]
@@ -116,10 +125,15 @@ public partial class MainPageViewModel : ObservableObject
 		else
 		{
 			IsSubscribed = true;
-			subscription = await _firebaseService.SubscribeDataAsync(async x =>
+			subscription = await firebaseService.SubscribeDataAsync(async x =>
 			{
-				await _dispatcher.DispatchAsync(() => _launcher.OpenAsync(x.Link));
+				await dispatcher.DispatchAsync(() => launcher.OpenAsync(x.Link));
 			});
+			if (Equals(subscription, Disposable.Empty))
+			{
+				IsSubscribed = false;
+				await Toast.Make("Subscription is not active. Check the input data").Show();
+			}
 		}
 	}
 }
