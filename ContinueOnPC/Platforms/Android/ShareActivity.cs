@@ -15,7 +15,7 @@ using Services;
 }, DataMimeType = "text/plain")]
 public class ShareActivity : MauiAppCompatActivity
 {
-	protected override async void OnCreate(Bundle savedInstanceState)
+	protected override async void OnCreate(Bundle? savedInstanceState)
 	{
 		base.OnCreate(savedInstanceState);
 		if (Intent is null)
@@ -33,7 +33,10 @@ public class ShareActivity : MauiAppCompatActivity
 			var serviceProvider = services.BuildServiceProvider();
 			var firebaseService = serviceProvider.GetRequiredService<IFirebaseService>();
 			var url = Intent.GetStringExtra(Intent.ExtraText);
-			await firebaseService.PublishDataAsync(url);
+			if (url is not null)
+			{
+				await firebaseService.PublishDataAsync(url);
+			}
 		}
 	}
 }
