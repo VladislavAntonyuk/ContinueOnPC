@@ -1,10 +1,6 @@
 ﻿namespace ContinueOnPC.iOS.ShareExtension;
 
-using System;
 using Foundation;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Maui.Devices;
-using Microsoft.Maui.Storage;
 using Services;
 using Social;
 using UniformTypeIdentifiers;
@@ -63,9 +59,9 @@ public partial class ShareViewController : SLComposeServiceViewController
 						attachment.LoadItem(UTTypes.Url.Identifier, null, async (data, error) =>
 						{
 							var nsUrl = data as NSUrl;
-							if (nsUrl != null)
+							var url = nsUrl?.AbsoluteString;
+							if (url is not null)
 							{
-								var url = nsUrl.AbsoluteString;
 								await firebaseService.PublishDataAsync(url);
 							}
 						});

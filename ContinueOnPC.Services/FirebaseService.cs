@@ -1,12 +1,12 @@
 ﻿namespace ContinueOnPC.Services;
 
 using System.Reactive.Disposables;
-using ContinueOnPC.Models;
 using Firebase.Auth;
 using Firebase.Auth.Providers;
 using Firebase.Database;
 using Firebase.Database.Query;
 using Firebase.Database.Streaming;
+using Models;
 
 public class FirebaseService : IFirebaseService
 {
@@ -19,26 +19,29 @@ public class FirebaseService : IFirebaseService
 		this.deviceInfo = deviceInfo;
 	}
 
-	public async Task<bool> ValidateConnection()
+	public async Task<HasErrorResult<bool>> ValidateConnection()
 	{
 		try
 		{
 			using var firebaseClient = await GetClient();
-			return true;
+			return new HasErrorResult<bool>().WithResult(true);
+		}
+		catch (FirebaseAuthHttpException e)
+		{
+			return new HasErrorResult<bool>().WithError(e.Reason.ToString());
 		}
 		catch (Exception e)
 		{
-			Console.WriteLine(e);
-			return false;
+			return new HasErrorResult<bool>().WithError(e.Message);
 		}
 	}
 
-	public async Task<bool> PublishDataAsync(string uri)
+	public async Task<HasErrorResult<bool>> PublishDataAsync(string uri)
 	{
 		var isValid = await ValidateConnection();
-		if (!isValid)
+		if (!isValid.IsSuccessful)
 		{
-			return false;
+			return isValid;
 		}
 
 		using var firebaseClient = await GetClient();
@@ -48,13 +51,13 @@ public class FirebaseService : IFirebaseService
 			                    Link = new Uri(uri),
 			                    Source = deviceInfo.Name
 		                    });
-		return true;
+		return isValid;
 	}
 
 	public async Task<IDisposable> SubscribeDataAsync(Func<LinkInfo, Task> action)
 	{
 		var isValid = await ValidateConnection();
-		if (!isValid)
+		if (!isValid.IsSuccessful)
 		{
 			return Disposable.Empty;
 		}

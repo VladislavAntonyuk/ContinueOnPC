@@ -17,7 +17,7 @@ public partial class MainPageViewModel : ObservableObject
 	[ObservableProperty]
 	private bool isSubscribed;
 
-	private IDisposable subscription;
+	private IDisposable? subscription;
 
 	public MainPageViewModel(IPreferencesService preferencesService,
 		IFirebaseService firebaseService,
@@ -103,14 +103,19 @@ public partial class MainPageViewModel : ObservableObject
 	[RelayCommand]
 	private async Task Test()
 	{
-		var result = await firebaseService.PublishDataAsync("https://vladislavantonyuk.azurewebsites.net");
-		if (result)
+		var result = await firebaseService.PublishDataAsync("https://vladislavantonyuk.github.io");
+		if (result.IsSuccessful)
 		{
 			await Toast.Make("Success").Show();
 		}
 		else
 		{
-			await Toast.Make("Unable to send data. Check the input data").Show();
+			var errorMessage = string.Join(Environment.NewLine, result.Errors);
+			if (Application.Current?.MainPage is not null)
+			{
+				await Application.Current.MainPage.DisplayAlert("Unable to send data. Check the input data",
+				                                                errorMessage, "OK");
+			}
 		}
 	}
 
@@ -119,7 +124,7 @@ public partial class MainPageViewModel : ObservableObject
 	{
 		if (IsSubscribed)
 		{
-			subscription.Dispose();
+			subscription?.Dispose();
 			IsSubscribed = false;
 		}
 		else
