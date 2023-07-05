@@ -36,5 +36,12 @@ jobs:
     - name: Build
       run: |
         dotnet build -c Release
-        &"${Env:ProgramFiles(x86)}\Windows Kits\10\App Certification Kit\MakeAppx.exe" pack /v /h SHA256 /d "ContinueOnPC\bin\Release\net7.0-windows10.0.19041.0\win10-x64" /p "output/Windows/ContinueOnPC.msix";
-      
+        copy ".\ContinueOnPC\obj\Release\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\*.*" ".\ContinueOnPC\bin\Release\net7.0-windows10.0.19041.0\win10-x64\"
+        copy ".\ContinueOnPC\obj\Release\net7.0-windows10.0.19041.0\win10-x64\resizetizer\sp\*.*" ".\ContinueOnPC\bin\Release\net7.0-windows10.0.19041.0\win10-x64\"
+        &"${Env:ProgramFiles(x86)}\Windows Kits\10\App Certification Kit\MakeAppx.exe" pack /v /h SHA256 /d "ContinueOnPC\bin\Release\net7.0-windows10.0.19041.0\win10-x64" /p "output/ContinueOnPC.msix";
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v1
+      with:
+          name: ContinueOnPC
+          path: output/
