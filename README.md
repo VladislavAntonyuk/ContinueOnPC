@@ -8,12 +8,12 @@ License: MIT.
 1. `&"${Env:ProgramFiles(x86)}\Windows Kits\10\App Certification Kit\MakeAppx.exe" pack /v /h SHA256 /d "ContinueOnPC\bin\Release\net7.0-windows10.0.19041.0\win10-x64" /p "output/Windows/ContinueOnPC.msix"`
 
 ## Setup Firebase account
-1. Create new project on https://console.firebase.google.com/
+1. Create a new project on https://console.firebase.google.com/
 1. Enable authentication by Email/Password on https://console.firebase.google.com/u/0/project/YOUR_PROJECT_ID/authentication/providers
-1. Create new user on https://console.firebase.google.com/u/0/project/YOUR_PROJECT_ID/authentication/users
+1. Create a new user on https://console.firebase.google.com/u/0/project/YOUR_PROJECT_ID/authentication/users
 1. Copy User UID.
-1. Create realtime database on https://console.firebase.google.com/u/0/project/YOUR_PROJECT_ID/database
-1. Choose start in LockedMode
+1. Create real-time database on https://console.firebase.google.com/u/0/project/YOUR_PROJECT_ID/database
+1. Choose Start in LockedMode
 1. Edit rules:
 ```json
 {

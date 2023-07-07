@@ -133,6 +133,18 @@ public partial class MainPageViewModel : ObservableObject
 			subscription = await firebaseService.SubscribeDataAsync(async x =>
 			{
 				await dispatcher.DispatchAsync(() => launcher.OpenAsync(x.Link));
+			}, async exception =>
+			{
+				await dispatcher.DispatchAsync(async () =>
+				{
+					if (Application.Current?.MainPage is not null)
+					{
+						var error = exception.InnerException is null ? exception.Message : exception.InnerException.Message;
+						await Application.Current.MainPage.DisplayAlert("Unable to subscribe", $"Error: {error}", "OK");
+					}
+
+					IsSubscribed = false;
+				});
 			});
 			if (Equals(subscription, Disposable.Empty))
 			{

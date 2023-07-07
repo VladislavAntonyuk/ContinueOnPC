@@ -1,5 +1,6 @@
 ﻿namespace ContinueOnPC.Services;
 
+using System;
 using System.Reactive.Disposables;
 using Firebase.Auth;
 using Firebase.Auth.Providers;
@@ -19,7 +20,7 @@ public class FirebaseService : IFirebaseService
 		this.deviceInfo = deviceInfo;
 	}
 
-	public async Task<HasErrorResult<bool>> ValidateConnection()
+	private async Task<HasErrorResult<bool>> ValidateConnection()
 	{
 		try
 		{
@@ -45,16 +46,24 @@ public class FirebaseService : IFirebaseService
 		}
 
 		using var firebaseClient = await GetClient();
-		await firebaseClient.Child("Links")
-		                    .PostAsync(new LinkInfo
-		                    {
-			                    Link = new Uri(uri),
-			                    Source = deviceInfo.Name
-		                    });
-		return isValid;
+		try
+		{
+			await firebaseClient.Child("Links")
+					                    .PostAsync(new LinkInfo
+					                    {
+						                    Link = new Uri(uri),
+						                    Source = deviceInfo.Name
+					                    });
+			return new HasErrorResult<bool>().WithResult(true);
+		}
+		catch (Exception e)
+		{
+			var error = e.InnerException is null ? e.Message : e.InnerException.Message;
+			return new HasErrorResult<bool>().WithError($"Error: {error}");
+		}
 	}
 
-	public async Task<IDisposable> SubscribeDataAsync(Func<LinkInfo, Task> action)
+	public async Task<IDisposable> SubscribeDataAsync(Func<LinkInfo, Task> onReceived, Func<Exception, Task> onError)
 	{
 		var isValid = await ValidateConnection();
 		if (!isValid.IsSuccessful)
@@ -76,10 +85,12 @@ public class FirebaseService : IFirebaseService
 			                     if (x.EventType == FirebaseEventType.InsertOrUpdate &&
 			                         deviceInfo.Name != x.Object.Source)
 			                     {
-				                     await action(x.Object);
+				                     await onReceived(x.Object);
 				                     await firebaseClient.Child("Links").Child(x.Key).DeleteAsync();
 			                     }
-		                     });
+		                     },
+                            async exception => await onError(exception),
+							firebaseClient.Dispose);
 	}
 
 	private async Task<FirebaseClient> GetClient()
