@@ -45,3 +45,4 @@ jobs:
       with:
           name: ContinueOnPC
           path: output/
+          retention-days: 14
