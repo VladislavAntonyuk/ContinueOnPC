@@ -5,7 +5,7 @@ License: MIT.
 
 ## Build
 1. `dotnet build`
-1. `&"${Env:ProgramFiles(x86)}\Windows Kits\10\App Certification Kit\MakeAppx.exe" pack /v /h SHA256 /d "ContinueOnPC\bin\Release\net7.0-windows10.0.19041.0\win10-x64" /p "output/Windows/ContinueOnPC.msix"`
+1. `&"${Env:ProgramFiles(x86)}\Windows Kits\10\App Certification Kit\MakeAppx.exe" pack /v /h SHA256 /d "ContinueOnPC\bin\Release\net8.0-windows10.0.19041.0\win10-x64" /p "output/Windows/ContinueOnPC.msix"`
 
 ## Setup Firebase account
 1. Create a new project on https://console.firebase.google.com/

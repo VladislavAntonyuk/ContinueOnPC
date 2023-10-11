@@ -27,18 +27,10 @@ public partial class ShareViewController : SLComposeServiceViewController
 			return false;
 		}
 
-		foreach (var extensionItem in ExtensionContext.InputItems)
-		{
-			if (extensionItem.Attachments != null)
-			{
-				foreach (var attachment in extensionItem.Attachments)
-				{
-					return attachment.HasItemConformingTo(UTTypes.Url.Identifier);
-				}
-			}
-		}
-
-		return false;
+		return ExtensionContext.InputItems
+			.Where(extensionItem => extensionItem.Attachments is not null)
+			.SelectMany(extensionItem => extensionItem.Attachments!)
+			.Any(attachment => attachment.HasItemConformingTo(UTTypes.Url.Identifier));
 	}
 
 	public override void DidSelectPost()
@@ -48,26 +40,20 @@ public partial class ShareViewController : SLComposeServiceViewController
 			return;
 		}
 
-		foreach (var extensionItem in ExtensionContext.InputItems)
+		foreach (var attachment in ExtensionContext.InputItems		
+			.Where(extensionItem => extensionItem.Attachments is not null)
+			.SelectMany(extensionItem => extensionItem.Attachments!)
+			.Where(attachment => attachment.HasItemConformingTo(UTTypes.Url.Identifier)))
 		{
-			if (extensionItem.Attachments != null)
+			attachment.LoadItem(UTTypes.Url.Identifier, null, async (data, error) =>
 			{
-				foreach (var attachment in extensionItem.Attachments)
+				var nsUrl = data as NSUrl;
+				var url = nsUrl?.AbsoluteString;
+				if (url is not null)
 				{
-					if (attachment.HasItemConformingTo(UTTypes.Url.Identifier))
-					{
-						attachment.LoadItem(UTTypes.Url.Identifier, null, async (data, error) =>
-						{
-							var nsUrl = data as NSUrl;
-							var url = nsUrl?.AbsoluteString;
-							if (url is not null)
-							{
-								await firebaseService.PublishDataAsync(url);
-							}
-						});
-					}
+					await firebaseService.PublishDataAsync(url);
 				}
-			}
+			});
 		}
 
 		// Inform the host that we're done, so it un-blocks its UI. Note: Alternatively you could call super's -didSelectPost, which will similarly complete the extension context.

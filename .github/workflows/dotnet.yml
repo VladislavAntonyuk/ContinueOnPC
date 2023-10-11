@@ -18,11 +18,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    
     - name: Setup .NET
-      uses: actions/setup-dotnet@v2
+      uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 7.0.x
-        include-prerelease: true
+        dotnet-version: 8.x
 
     - name: Install dependencies
       run: dotnet workload install maui
@@ -35,14 +35,20 @@ jobs:
       
     - name: Build
       run: |
-        dotnet build -c Release
-        copy ".\ContinueOnPC\obj\Release\net7.0-windows10.0.19041.0\win10-x64\resizetizer\r\*.*" ".\ContinueOnPC\bin\Release\net7.0-windows10.0.19041.0\win10-x64\"
-        copy ".\ContinueOnPC\obj\Release\net7.0-windows10.0.19041.0\win10-x64\resizetizer\sp\*.*" ".\ContinueOnPC\bin\Release\net7.0-windows10.0.19041.0\win10-x64\"
-        &"${Env:ProgramFiles(x86)}\Windows Kits\10\App Certification Kit\MakeAppx.exe" pack /v /h SHA256 /d "ContinueOnPC\bin\Release\net7.0-windows10.0.19041.0\win10-x64" /p "output/ContinueOnPC.msix";
+        echo "Windows"
+        dotnet publish ContinueOnPC\ContinueOnPC.csproj -f net8.0-windows10.0.19041.0
+        copy ".\ContinueOnPC\obj\Release\net8.0-windows10.0.19041.0\win10-x64\resizetizer\r\*.*" ".\ContinueOnPC\bin\Release\net8.0-windows10.0.19041.0\win10-x64\"
+        copy ".\ContinueOnPC\obj\Release\net8.0-windows10.0.19041.0\win10-x64\resizetizer\sp\*.*" ".\ContinueOnPC\bin\Release\net8.0-windows10.0.19041.0\win10-x64\"
+        &"${Env:ProgramFiles(x86)}\Windows Kits\10\App Certification Kit\MakeAppx.exe" pack /v /h SHA256 /d "ContinueOnPC\bin\Release\net8.0-windows10.0.19041.0\win10-x64" /p "output\ContinueOnPC.msix";
+        copy ".\ContinueOnPC\bin\Release\net8.0-windows10.0.19041.0\win10-x64\AppPackages\**\*.msix" "output\ContinueOnPC-original.msix"
+
+        echo "Android"
+        dotnet publish ContinueOnPC\ContinueOnPC.csproj -f net8.0-android
+        copy ".\ContinueOnPC\bin\Release\net8.0-android\*.aab" "output\ContinueOnPC.aab"
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v1
       with:
           name: ContinueOnPC
           path: output/
-          retention-days: 14
+          retention-days: 7
