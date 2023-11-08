@@ -17,7 +17,7 @@
 	<ItemGroup>
 		<PackageReference Include="FirebaseDatabase.net" Version="4.2.0" />
 		<PackageReference Include="FirebaseAuthentication.net" Version="4.1.0" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.0-rc.2.9511" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.0-rc.2.9530" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\ContinueOnPC.Models\ContinueOnPC.Models.csproj" />
